@@ -57,7 +57,7 @@ pipeline{
                 docker stop frontend || true 
                 docker run -d \
                 --name frontend \
-                -p 80:80
+                -p 80:80 \
                 $IMAGE_NAME:latest
                 '
                 """
