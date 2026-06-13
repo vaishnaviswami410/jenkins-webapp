@@ -13,6 +13,12 @@ pipeline{
         }
         
             }
+            stage('Build Docker Image') {
+            steps {
+                sh '''
+                docker build -f docker/dockerfile -t $IMAGE_NAME:$IMAGE_TAG .
+                '''}
+            }
              
         stage('Docker Login'){
             steps{
