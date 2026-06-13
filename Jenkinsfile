@@ -64,8 +64,8 @@ pipeline{
             }
         }
     }
-    Post {
-        Success {
+    post {
+        success {
             echo "Delployment Successful!"
         }
        failure{
