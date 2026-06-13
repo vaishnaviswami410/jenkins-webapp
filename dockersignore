@@ -1,0 +1,56 @@
+# .dockerignore
+
+# --- Version Control ---
+.git
+.gitignore
+.gitattributes
+
+# --- IDEs and Text Editors ---
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# --- Temporary & Log Files ---
+*.log
+*.tmp
+*.bak
+.cache/
+
+# --- Sensitive Data / Secrets ---
+.env
+*.pem
+*.key
+credentials.json
+secrets/
+
+# --- Language & Framework Dependencies ---
+# Node.js
+node_modules/
+npm-debug.log
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+env/
+
+# Java / Build Tools
+.gradle/
+build/
+target/
+
+# --- Docker & CI/CD Files ---
+.dockerignore
+docker-compose.yml
+.github/
+.gitlab-ci.yml
+
+# --- Documentation ---
+README.md
+docs/
