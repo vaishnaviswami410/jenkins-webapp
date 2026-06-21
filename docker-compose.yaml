@@ -20,7 +20,7 @@ services:
     ports:
       - "8081:8080"
   frontend:
-    image: vaishnaviswami410/fronted:v1
+    image: vaishnaviswami410/frontend:v1
     container_name: frontend
     restart: always
     depends_on:
