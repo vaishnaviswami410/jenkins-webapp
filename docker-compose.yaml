@@ -12,7 +12,7 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
   backend:
-    image: backend:v1
+    image: vaishnaviswami410/backend:v1
     container_name: backend
     restart: always
     depends_on:
@@ -20,7 +20,7 @@ services:
     ports:
       - "8080:8080"
   frontend:
-    image: frontend:v1
+    image: vaishnaviswami410/fronted:v1
     container_name: frontend
     restart: always
     depends_on:
