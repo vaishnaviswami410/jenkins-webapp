@@ -3,7 +3,7 @@ pipeline{
     stages{
         stages('Deployment'){
             steps{
-                ssh ubuntu@3.110.104.231 '''
+                ssh ubuntu@65.2.80.159 '''
                 copy docker-compose.yaml /home/ubuntu/docker-compose.yaml
                 docker-compose -f /home/ubuntu/docker-compose.yaml down
                 docker-compose -f /home/ubuntu/docker-compose.yaml up -d
