@@ -1,19 +1,73 @@
 pipeline {
-    agent any
-
-    stages {
-        stage('Deployment') {
-            steps {
+agent any
+environment{
+    AWS_REGION = 'ap-south-1'
+    ACCOUNT_ID = '052223515619'
+    REPOSITORY = 'frontend'
+    IMAGE_TAG = '${BUILD_NUMBER}'
+    ECR_URI = "${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPOSITORY}:${IMAGE_TAG}"
+    ACCESS_KEY_ID = $ACCESS_KEY_ID
+    SECRET_ACCESS_KEY = $SECRET_ACCESS_KEY
+    CUSTOMER_NAME = 'default'
+    SERVICE_NAME = 'frontend-785c'
+}
+stages{
+        stage('Checkout'){
+            steps{
+                checkout scm
+            }
+        }
+        stage('Build Docker Image'){
+            steps{
                 sh """
-                scp docker-compose.yaml ubuntu@13.206.99.164:/home/ubuntu/docker-compose.yaml
-
-                ssh ubuntu@13.206.99.164 '
-                cd /home/ubuntu
-                docker compose down
-                docker compose up -d
-                '
+                docker build  dockerfile -t ${REPOSITORY}:${IMAGE_TAG} .
                 """
             }
+        }
+        stage('Login to AWS ECR'){
+            steps{
+                sh """
+                aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+                """
+            }
+        }
+        stage ('Login to AWS CLI'){
+            steps{
+                sh """
+                aws configure set aws_access_key_id ${ACCESS_KEY_ID}
+                aws configure set aws_secret_access_key ${SECRET_ACCESS_KEY}
+                aws configure set default.region ${AWS_REGION}
+                """
+            }
+        }
+        stage('Tag and Push Docker Image to ECR'){
+            steps{
+                sh """
+                docker tag ${REPOSITORY}:${IMAGE_TAG} ${ECR_URI}
+                docker push ${ECR_URI}
+                """
+            }
+        }
+        stage('Deploy to ECS Service'){
+            steps{
+                sh """
+                aws ecs update-service \
+                --cluster ${CLUSTER_NAME} \
+                --service ${SERVICE_NAME} \
+                --force-new-deployment
+                """
+            }
+        }
+    }
+    post{
+        success{
+            echo "Deployment Successful!"
+            cleanWs()
+            sh 'docker image prune -f'
+        }
+        failure{
+            echo "Deployment Failed!"
+            cleanWs()
         }
     }
 }
