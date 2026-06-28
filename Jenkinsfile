@@ -5,9 +5,9 @@ environment{
     ACCOUNT_ID = '052223515619'
     REPOSITORY = 'frontend'
     IMAGE_TAG = '${BUILD_NUMBER}'
-    ECR_URI = "${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPOSITORY}:${IMAGE_TAG}"
-    ACCESS_KEY_ID = "${ACCESS_KEY_ID}"
-    SECRET_ACCESS_KEY = "${SECRET_ACCESS_KEY}"
+    ECR_URI = "${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPOSITORY}"
+    ACCESS_KEY_ID = credentials('ACCESS_KEY_ID')
+    SECRET_ACCESS_KEY = credentials('SECRET_ACCESS_KEY')
     CUSTOMER_NAME = 'default'
     SERVICE_NAME = 'frontend-785c'
 }
@@ -44,7 +44,9 @@ stages{
             steps{
                 sh """
                 docker tag ${REPOSITORY}:${IMAGE_TAG} ${ECR_URI}
+                docker tag ${REPOSITORY}:${IMAGE_TAG} ${ECR_URI}:latest
                 docker push ${ECR_URI}
+                docker push ${ECR_URI}:latest
                 """
             }
         }
