@@ -20,7 +20,7 @@ stages{
         stage('Build Docker Image'){
             steps{
                 sh """
-                docker build  dockerfile -t ${REPOSITORY}:${IMAGE_TAG} .
+                docker build  -f dockerfile -t ${REPOSITORY}:${IMAGE_TAG} .
                 """
             }
         }
