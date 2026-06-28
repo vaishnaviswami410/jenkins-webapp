@@ -8,7 +8,7 @@ environment{
     ECR_URI = "${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPOSITORY}"
     ACCESS_KEY_ID = credentials('ACCESS_KEY_ID')
     SECRET_ACCESS_KEY = credentials('SECRET_ACCESS_KEY')
-    CUSTOMER_NAME = 'default'
+    CLUSTER_NAME = 'default'
     SERVICE_NAME = 'frontend-785c'
 }
 stages{
